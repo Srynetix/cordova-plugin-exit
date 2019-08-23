@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 
 public class Exit extends CordovaPlugin {
     protected void pluginInitialize() {}
@@ -22,7 +23,16 @@ public class Exit extends CordovaPlugin {
         if (action.equals("exit")) {
             try {
                 Activity activity = this.cordova.getActivity();
-                activity.finish();
+
+                // Takes user to home screen
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                activity.startActivity(intent);
+
+                // Kills all activities of app
+                System.exit(0);
+
                 callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, 0));
             } catch (Exception e) {
                 callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, 1));
